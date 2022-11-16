@@ -3,6 +3,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -13,8 +14,8 @@ const Header = () => {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               fontFamily: "monospace",

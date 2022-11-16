@@ -2,16 +2,18 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Box, CardActionArea } from "@mui/material";
+import { Box, CardActionArea, Container } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 const NoteCard = () => {
+  const id = 1;
+
   return (
     <Box display={"inline-flex"}>
-      <CardActionArea component={Link} to={"/new-card"}>
+      <CardActionArea component={Link} to={"/new-note"}>
         <CustomizedCard>
           <CardHeader title="New Note" subheader="I'll keep it here!" />
           <Divider />
@@ -21,7 +23,7 @@ const NoteCard = () => {
         </CustomizedCard>
       </CardActionArea>
 
-      <CardActionArea>
+      <CardActionArea component={Link} to={`/note/${id}`}>
         <CustomizedCard>
           <CardHeader
             title="Shrimp and Chorizo Paella"
