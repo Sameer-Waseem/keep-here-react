@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 const Login = () => {
@@ -24,12 +23,10 @@ const Login = () => {
     },
   });
 
-  console.log(touched);
-
   return (
     <Container>
       <Box display={"grid"} justifyContent={"center"}>
-        <Box margin={"16px 0"}>
+        <Box margin={"16px 0"} display={"grid"}>
           <InputLabel>Email</InputLabel>
           <TextField
             id="email"
@@ -39,6 +36,7 @@ const Login = () => {
             value={values.email}
             onChange={handleChange}
             InputProps={{ style: { backgroundColor: "#FFFFFF" } }}
+            sx={{ width: "400px" }}
           />
           {errors?.email && touched?.email && (
             <Typography variant="caption" color={"red"}>
@@ -56,7 +54,6 @@ const Login = () => {
             onChange={handleChange}
             InputProps={{ style: { backgroundColor: "#FFFFFF" } }}
           />
-
           {errors?.password && touched?.password && (
             <Typography variant="caption" color={"red"}>
               {errors.password}
@@ -64,12 +61,7 @@ const Login = () => {
           )}
         </Box>
 
-        <Button
-          variant="contained"
-          component={Link}
-          to="/"
-          onClick={() => handleSubmit()}
-        >
+        <Button variant="contained" onClick={() => handleSubmit()}>
           Log In
         </Button>
       </Box>
