@@ -2,16 +2,60 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Box, CardActionArea, Container } from "@mui/material";
+import { Box, CardActionArea, CircularProgress } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import {
+  JSXElementConstructor,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import axios from "axios";
+
+interface NoteInterface {
+  _id: string;
+  title: any;
+  description:
+    | string
+    | number
+    | boolean
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | ReactFragment
+    | ReactPortal
+    | null
+    | undefined;
+}
 
 const NoteCard = () => {
-  const id = 1;
+  const [notes, setNotes] = useState<any>([]);
 
-  return (
+  const getNotes = useCallback(async () => {
+    const { data } = await axios.get(
+      "https://keep-here.herokuapp.com/api/note"
+    );
+
+    setNotes(data?.notes);
+  }, []);
+
+  useEffect(() => {
+    getNotes();
+  }, []);
+
+  if (!notes || !notes?.length) {
+    return (
+      <CircularProgress
+        sx={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
+  }
+
+  return notes.map((note: NoteInterface) => (
     <Box display={"inline-flex"}>
       <CardActionArea component={Link} to={"/new-note"}>
         <CustomizedCard>
@@ -23,24 +67,19 @@ const NoteCard = () => {
         </CustomizedCard>
       </CardActionArea>
 
-      <CardActionArea component={Link} to={`/note/${id}`}>
+      <CardActionArea component={Link} to={`/note/${note._id}`}>
         <CustomizedCard>
-          <CardHeader
-            title="Shrimp and Chorizo Paella"
-            subheader="September 14, 2016"
-          />
+          <CardHeader title={note.title} subheader="September 14, 2016" />
           <Divider />
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
+              {note.description}
             </Typography>
           </CardContent>
         </CustomizedCard>
       </CardActionArea>
     </Box>
-  );
+  ));
 };
 
 const CustomizedCard = styled(Card)`

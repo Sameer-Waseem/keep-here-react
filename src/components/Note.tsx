@@ -6,29 +6,54 @@ import {
   styled,
   TextField,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
+
+const initialValues = {
+  title: "",
+  description: "",
+};
 
 const Note = () => {
-  const initialValues = {
-    title: "",
-    description: "",
-  };
+  const { id } = useParams();
+  const { pathname } = useLocation();
+  const [note, setNote] = useState<any>();
 
   const { values, errors, touched, handleSubmit, handleChange, handleReset } =
     useFormik({
       initialValues,
       validationSchema: cardSchema,
       onSubmit: (value, action) => {
-        console.log(value);
         action.resetForm();
       },
     });
+
+  const getNote = useCallback(async () => {
+    const { data } = await axios.get(
+      `https://keep-here.herokuapp.com/api/note/${id}`
+    );
+
+    setNote(data?.note);
+  }, []);
+
+  useEffect(() => {
+    getNote();
+  }, []);
+
+  if (!note && !pathname.includes("new-note")) {
+    return (
+      <CircularProgress
+        sx={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
+  }
 
   return (
     <Container>
