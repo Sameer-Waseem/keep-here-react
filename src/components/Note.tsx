@@ -16,36 +16,41 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
-const initialValues = {
-  title: "",
-  description: "",
-};
+const endPoint = "https://keep-here.herokuapp.com/api/note";
 
 const Note = () => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const [note, setNote] = useState<any>();
+  const [initialValues, setInitialValues] = useState<any>({});
 
   const { values, errors, touched, handleSubmit, handleChange, handleReset } =
     useFormik({
       initialValues,
       validationSchema: cardSchema,
-      onSubmit: (value, action) => {
+      enableReinitialize: true,
+      onSubmit: async (value, action) => {
+        const response = await axios.post(endPoint, {
+          title: value?.title,
+          description: value?.description,
+        });
+
         action.resetForm();
       },
     });
 
   const getNote = useCallback(async () => {
-    const { data } = await axios.get(
-      `https://keep-here.herokuapp.com/api/note/${id}`
-    );
+    const { data } = await axios.get(`${endPoint}/${id}`);
 
     setNote(data?.note);
+    setInitialValues(data?.note);
   }, []);
 
   useEffect(() => {
     getNote();
   }, []);
+
+  console.log("errors:", errors);
 
   if (!note && !pathname.includes("new-note")) {
     return (
@@ -81,7 +86,7 @@ const Note = () => {
           />
           {errors?.title && touched?.title && (
             <Typography variant="caption" color={"red"}>
-              {errors.title}
+              {/* {errors.title} */}
             </Typography>
           )}
 
@@ -99,7 +104,7 @@ const Note = () => {
           />
           {errors?.description && touched?.description && (
             <Typography variant="caption" color={"red"}>
-              {errors.description}
+              {/* {errors.description} */}
             </Typography>
           )}
         </NoteBox>

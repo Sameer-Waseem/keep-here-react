@@ -9,27 +9,34 @@ import {
 } from "@mui/material";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const initialValues = {
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+  password: "",
+};
 
 const Signup = () => {
-  const initialValues = {
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone: "",
-    password: "",
-  };
+  const navigate = useNavigate();
 
   const { values, errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues,
     validationSchema: signupSchema,
     onSubmit: async (value) => {
-      console.log("value:", value);
+      try {
+        const { data } = await axios.post(
+          "https://keep-here.herokuapp.com/api/register",
+          value
+        );
 
-      const response = await axios.post(
-        "https://keep-here.herokuapp.com/api/register",
-        value
-      );
-      console.log("response:", response);
+        if (data) {
+          localStorage.setItem("token", data.token);
+          navigate("/");
+        }
+      } catch (error) {}
     },
   });
 
