@@ -8,18 +8,33 @@ import {
   Typography,
 } from "@mui/material";
 import * as Yup from "yup";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { loginEndpoint } from "./EndPoint/endPoint";
+
+const initialValues = {
+  email: "",
+  password: "",
+};
 
 const Login = () => {
-  const initialValues = {
-    email: "",
-    password: "",
-  };
+  const navigate = useNavigate();
 
   const { values, errors, touched, handleSubmit, handleChange } = useFormik({
     initialValues,
     validationSchema: logInSchema,
-    onSubmit: (value) => {
-      console.log(value);
+    onSubmit: async (value) => {
+      try {
+        const { data } = await axios.post(loginEndpoint, value);
+
+        if (data) {
+          localStorage.setItem("token", data.token);
+          navigate("/");
+          window.location.reload();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 

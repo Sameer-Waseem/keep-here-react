@@ -10,6 +10,7 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { registerEndpoint } from "./EndPoint/endPoint";
 
 const initialValues = {
   first_name: "",
@@ -27,14 +28,12 @@ const Signup = () => {
     validationSchema: signupSchema,
     onSubmit: async (value) => {
       try {
-        const { data } = await axios.post(
-          "https://keep-here.herokuapp.com/api/register",
-          value
-        );
+        const { data } = await axios.post(registerEndpoint, value);
 
         if (data) {
           localStorage.setItem("token", data.token);
           navigate("/");
+          window.location.reload();
         }
       } catch (error) {}
     },

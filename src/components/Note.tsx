@@ -15,10 +15,9 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { noteEndpoint } from "./EndPoint/endPoint";
 
-const endPoint = "https://keep-here.herokuapp.com/api/note";
-
-const Note = () => {
+const Note = ({ user }: any) => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const [note, setNote] = useState<any>();
@@ -30,9 +29,10 @@ const Note = () => {
       validationSchema: cardSchema,
       enableReinitialize: true,
       onSubmit: async (value, action) => {
-        const response = await axios.post(endPoint, {
+        const response = await axios.post(noteEndpoint, {
           title: value?.title,
           description: value?.description,
+          user_id: user?.id,
         });
 
         action.resetForm();
@@ -40,7 +40,7 @@ const Note = () => {
     });
 
   const getNote = useCallback(async () => {
-    const { data } = await axios.get(`${endPoint}/${id}`);
+    const { data } = await axios.get(`${noteEndpoint}/${id}`);
 
     setNote(data?.note);
     setInitialValues(data?.note);

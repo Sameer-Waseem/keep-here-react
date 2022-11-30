@@ -17,6 +17,7 @@ import {
   useState,
 } from "react";
 import axios from "axios";
+import { noteEndpoint } from "./EndPoint/endPoint";
 
 interface NoteInterface {
   _id: string;
@@ -36,9 +37,7 @@ const NoteCard = () => {
   const [notes, setNotes] = useState<any>([]);
 
   const getNotes = useCallback(async () => {
-    const { data } = await axios.get(
-      "https://keep-here.herokuapp.com/api/note"
-    );
+    const { data } = await axios.get(noteEndpoint);
 
     setNotes(data?.notes);
   }, []);
