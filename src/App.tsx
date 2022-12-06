@@ -12,6 +12,7 @@ import Logout from "./components/Logout";
 import Signup from "./components/Signup";
 import Header from "./components/Header";
 import NoteCard from "./components/NoteCard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
 
@@ -36,9 +37,27 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout user={currentUser} />} />
         <Route path="/sign-up" element={<Signup />} />
-        <Route path="/cards" element={<NoteCard />} />
-        <Route path="/new-note" element={<Note user={currentUser} />} />
-        <Route path="/note/:id" element={<Note />} />
+        <Route
+          path="/cards"
+          element={
+            <ProtectedRoute isAllowed={currentUser} Component={<NoteCard />} />
+          }
+        />
+        <Route
+          path="/new-note"
+          element={
+            <ProtectedRoute
+              isAllowed={currentUser}
+              Component={<Note user={currentUser} />}
+            />
+          }
+        />
+        <Route
+          path="/note/:id"
+          element={
+            <ProtectedRoute isAllowed={currentUser} Component={<Note />} />
+          }
+        />
         <Route path="/" element={<Home user={currentUser} />} />
       </Routes>
     </>
