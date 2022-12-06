@@ -1,15 +1,19 @@
 import "./App.css";
-import Header from "./components/Header";
-import NoteCard from "./components/NoteCard";
+
+import axios from "axios";
+import jwtDecode from "jwt-decode";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Note from "./components/Note";
+
 import Home from "./components/Home";
+import Note from "./components/Note";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Signup from "./components/Signup";
-import jwtDecode from "jwt-decode";
-import { useState } from "react";
-import { useEffect } from "react";
+import Header from "./components/Header";
+import NoteCard from "./components/NoteCard";
+
+axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
 
 function App() {
   const [currentUser, setCurrentUser] = useState<any>();

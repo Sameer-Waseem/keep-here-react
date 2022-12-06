@@ -17,7 +17,7 @@ import {
   useState,
 } from "react";
 import axios from "axios";
-import { noteEndpoint } from "./EndPoint/endPoint";
+import { noteEndpoint } from "../endPoint/endPoint";
 
 interface NoteInterface {
   _id: string;

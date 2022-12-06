@@ -15,7 +15,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { noteEndpoint } from "./EndPoint/endPoint";
+import { noteEndpoint } from "../endPoint/endPoint";
 
 const Note = ({ user }: any) => {
   const { id } = useParams();
@@ -29,13 +29,17 @@ const Note = ({ user }: any) => {
       validationSchema: cardSchema,
       enableReinitialize: true,
       onSubmit: async (value, action) => {
-        const response = await axios.post(noteEndpoint, {
-          title: value?.title,
-          description: value?.description,
-          user_id: user?.id,
-        });
+        try {
+          const response = await axios.post(noteEndpoint, {
+            title: value?.title,
+            description: value?.description,
+            user_id: parseInt(user?.id),
+          });
 
-        action.resetForm();
+          console.log("response:", response);
+        } catch (error) {
+          console.log("error:", error);
+        }
       },
     });
 
@@ -49,8 +53,6 @@ const Note = ({ user }: any) => {
   useEffect(() => {
     getNote();
   }, []);
-
-  console.log("errors:", errors);
 
   if (!note && !pathname.includes("new-note")) {
     return (

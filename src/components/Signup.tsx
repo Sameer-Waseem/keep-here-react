@@ -10,7 +10,7 @@ import {
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { registerEndpoint } from "./EndPoint/endPoint";
+import { registerEndpoint } from "../endPoint/endPoint";
 
 const initialValues = {
   first_name: "",
