@@ -30,16 +30,12 @@ const Note = ({ user }: any) => {
       enableReinitialize: true,
       onSubmit: async (value, action) => {
         try {
-          const response = await axios.post(noteEndpoint, {
+          await axios.post(noteEndpoint, {
             title: value?.title,
             description: value?.description,
             user_id: parseInt(user?.id),
           });
-
-          console.log("response:", response);
-        } catch (error) {
-          console.log("error:", error);
-        }
+        } catch (error) {}
       },
     });
 
@@ -51,7 +47,9 @@ const Note = ({ user }: any) => {
   }, []);
 
   useEffect(() => {
-    getNote();
+    if (id) {
+      getNote();
+    }
   }, []);
 
   if (!note && !pathname.includes("new-note")) {

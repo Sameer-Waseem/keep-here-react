@@ -1,5 +1,5 @@
-export const loginEndpoint = "https://keep-here.herokuapp.com/api/login"
+export const loginEndpoint = "http://localhost:4000/api/login"
 
-export const registerEndpoint = "https://keep-here.herokuapp.com/api/register"
+export const registerEndpoint = "http://localhost:4000/api/register"
 
-export const noteEndpoint = "https://keep-here.herokuapp.com/api/note"
+export const noteEndpoint = "http://localhost:4000/api/note"

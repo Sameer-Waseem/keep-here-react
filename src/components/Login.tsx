@@ -32,9 +32,7 @@ const Login = () => {
           navigate("/");
           window.location.reload();
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     },
   });
 

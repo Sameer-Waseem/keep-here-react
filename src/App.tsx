@@ -39,24 +39,15 @@ function App() {
         <Route path="/sign-up" element={<Signup />} />
         <Route
           path="/cards"
-          element={
-            <ProtectedRoute isAllowed={currentUser} Component={<NoteCard />} />
-          }
+          element={<ProtectedRoute user={currentUser} Component={NoteCard} />}
         />
         <Route
           path="/new-note"
-          element={
-            <ProtectedRoute
-              isAllowed={currentUser}
-              Component={<Note user={currentUser} />}
-            />
-          }
+          element={<ProtectedRoute user={currentUser} Component={Note} />}
         />
         <Route
           path="/note/:id"
-          element={
-            <ProtectedRoute isAllowed={currentUser} Component={<Note />} />
-          }
+          element={<ProtectedRoute user={currentUser} Component={Note} />}
         />
         <Route path="/" element={<Home user={currentUser} />} />
       </Routes>

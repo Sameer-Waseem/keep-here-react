@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
 
 const Home = ({ user }: any) => {
-  console.log("user:", user);
-
   return (
     <Box display={"grid"} justifyContent={"center"}>
       <Typography
